@@ -86,8 +86,8 @@
 
             // URL del API+
             // //http://localhost/server/php/2026/invitacion-xv/party-xv-fotos/upload-folder/?grupo=001
-            const urlBase = "http://localhost/server/php/2026/invitacion-xv/party-xv-fotos/";
-            //const urlBase = "https://party.labs26.com/xv-evelyn-laila-rodrodriguez-foto-album/";
+            //const urlBase = "http://localhost/server/php/2026/invitacion-xv/party-xv-fotos/";
+            const urlBase = "https://party.labs26.com/xv-evelyn-laila-rodrodriguez-foto-album/";
             const urlApi = urlBase + "upload-folder/?grupo=" + grupo;
 
             // Carpeta de imágenes originales
