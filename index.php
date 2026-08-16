@@ -228,46 +228,83 @@ $(document).ready(function () {
     // BOTÓN COMPARTIR
     // ==========================================
 
-    $(document).on("click", ".btn-compartir", function () {
+$(document).on("click", ".btn-compartir", async function () {
 
-        const urlFoto = $(this).data("url");
-        const textoCompartir = "¡Qué bonito recuerdo de esta fiesta! 🎉✨";
-        const hashtags = "#XVAnos #Fiesta #Recuerdos";
+    const urlFoto = $(this).data("url");
 
-        // Texto completo
-        const textoCompleto =
-            textoCompartir + "\n\n" + hashtags;
+    const textoCompartir =
+        "¡Qué bonito recuerdo de esta fiesta! 🎉✨";
 
-        // Comprobar si el navegador soporta Web Share API
-        if (navigator.share) {
+    const hashtags =
+        "#XVAnos #EvelynLaila #XVAnos2026";
 
-            navigator.share({
-            title: "Fotos de la fiesta 🎉",
-            text: textoCompleto,
-            url: urlFoto
-            })
-            .then(function () {
+    const textoCompleto =
+        textoCompartir + "\n\n" + hashtags;
 
-                console.log("Foto compartida");
 
-            })
-            .catch(function (error) {
+    // ==========================================
+    // COPIAR TEXTO AL PORTAPAPELES
+    // ==========================================
 
-                console.log(
-                    "Compartir cancelado:",
-                    error
-                );
+    try {
+
+        await navigator.clipboard.writeText(textoCompleto);
+
+        console.log("Texto copiado al portapapeles");
+
+    } catch (error) {
+
+        console.log(
+            "No se pudo copiar el texto:",
+            error
+        );
+
+    }
+
+
+    // ==========================================
+    // COMPARTIR
+    // ==========================================
+
+    if (navigator.share) {
+
+        try {
+
+            await navigator.share({
+
+                title: "Fotos de los XV años 🎉",
+
+                text: textoCompleto,
+
+                url: urlFoto
 
             });
 
-        } else {
+            console.log("Compartido correctamente");
 
-            // Si el navegador no soporta Web Share API
-            copiarAlPortapapeles(urlFoto);
+        } catch (error) {
+
+            console.log(
+                "Compartir cancelado:",
+                error
+            );
 
         }
 
-    });
+    } else {
+
+        // ======================================
+        // NAVEGADOR SIN WEB SHARE
+        // ======================================
+
+        alert(
+            "El texto y hashtags fueron copiados. " +
+            "Ahora puedes compartir la foto y pegar el texto."
+        );
+
+    }
+
+});
 
 
     // ==========================================
