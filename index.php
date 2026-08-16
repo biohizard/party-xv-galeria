@@ -77,167 +77,226 @@
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
 
-
-    <script>
-        $(document).ready(function () {
-
+<script>
+$(document).ready(function () {
             // Grupo que queremos consultar
-            const grupo = $('#mesa').val();;
+            const grupo = $('#mesa').val();
 
             // URL del API+
-            // //http://localhost/server/php/2026/invitacion-xv/party-xv-fotos/upload-folder/?grupo=001
-            //const urlBase = "http://localhost/server/php/2026/invitacion-xv/party-xv-fotos/";
+            //               https://party.labs26.com/xv-evelyn-laila-rodrodriguez-foto-album/upload-folder/?grupo=000
+            //               http://localhost/server/php/2026/invitacion-xv/party-xv-fotos/upload-folder/?grupo=000
             const urlBase = "https://party.labs26.com/xv-evelyn-laila-rodrodriguez-foto-album/";
-            const urlApi = urlBase + "upload-folder/?grupo=" + grupo;
+            const urlApi  = urlBase + "upload-folder/?grupo=" + grupo;
 
-            // Carpeta de imágenes originales
+            //URL party-xv-fotos
+            //https://party.labs26.com/xv-evelyn-laila-rodrodriguez-foto-album/?mesa=000
+            //http://localhost/server/php/2026/invitacion-xv/party-xv-fotos/
+
+            // URL de las imágenes originales
             const urlImages = urlBase + "upload-folder/";
 
-            // Carpeta de thumbnails
+            // URL de los thumbnails
             const urlThumbnails = urlBase + "upload-folder/thumbnails/";
+                            
+            //URL foto-album
+            //const urlBase = "https://party.labs26.com/xv-evelyn-laila-rodrodriguez-foto-album/?mesa=000";
+            //                 http://localhost/server/php/2026/invitacion-xv/party-xv-galeria/?mesa=000
+
+    $.ajax({
+
+        url: urlApi,
+        type: "GET",
+        dataType: "json",
+
+        success: function (response) {
+
+            if (
+                response.success === true &&
+                Array.isArray(response.imagenes)
+            ) {
+
+                const grupos = [
+                    [],
+                    [],
+                    []
+                ];
 
 
-            $.ajax({
+                // Dividir imágenes en 3 grupos
+                response.imagenes.forEach(function (imagen, index) {
 
-                url: urlApi,
-                type: "GET",
-                dataType: "json",
+                    const grupo = index % 3;
 
-                success: function (response) {
+                    grupos[grupo].push(imagen);
 
-                    // Comprobamos que la respuesta sea correcta
-                    if (
-                        response.success === true &&
-                        Array.isArray(response.imagenes)
-                    ) {
-
-                        // Creamos los 3 grupos
-                        const grupos = [
-                            [],
-                            [],
-                            []
-                        ];
+                });
 
 
-                        // =========================================
-                        // DIVIDIR LAS IMÁGENES EN 3 GRUPOS
-                        // =========================================
-
-                        response.imagenes.forEach(function (imagen, index) {
-
-                            const grupo = index % 3;
-
-                            grupos[grupo].push(imagen);
-
-                        });
+                // Limpiar contenedores
+                $("#image1").empty();
+                $("#image2").empty();
+                $("#image3").empty();
 
 
-                        // =========================================
-                        // LIMPIAR CONTENEDORES
-                        // =========================================
+                // Crear las tres columnas
+                grupos.forEach(function (imagenes, index) {
 
-                        $("#image1").empty();
-                        $("#image2").empty();
-                        $("#image3").empty();
+                    const contenedor = $("#image" + (index + 1));
 
 
-                        // =========================================
-                        // AGREGAR IMÁGENES A LAS COLUMNAS
-                        // =========================================
+                    imagenes.forEach(function (imagen) {
 
-                        grupos.forEach(function (imagenes, index) {
-
-                            const contenedor = $("#image" + (index + 1));
+                        // Quitar thumb_ para obtener la imagen original
+                        const imagenOriginal =
+                            imagen.replace(/^thumb_/, "");
 
 
-                            imagenes.forEach(function (imagen) {
+                        // URLs
+                        const thumbnail =
+                            urlThumbnails + imagen;
 
-                                /*
-                                 * imagen contiene por ejemplo:
-                                 *
-                                 * thumb_mesa-001--1786521643-137.jpg
-                                 *
-                                 * Para obtener la imagen original
-                                 * eliminamos "thumb_"
-                                 */
-
-                                const imagenOriginal = imagen.replace(/^thumb_/, "");
+                        const original =
+                            urlImages + imagenOriginal;
 
 
-                                // URL completa del thumbnail
-                                const thumbnail =
-                                    urlThumbnails + imagen;
+                        // HTML de la foto
+                        const html = `
+                            <div class="foto-container">
 
+                                <a
+                                    href="${original}"
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    <img
+                                        src="${thumbnail}"
+                                        class="w-100 shadow-1-strong rounded mb-2"
+                                        alt="Foto de la fiesta"
+                                        loading="lazy"
+                                    >
+                                </a>
 
-                                // URL completa de la imagen original
-                                const original =
-                                    urlImages + imagenOriginal;
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-light w-100 mb-4 btn-compartir"
+                                    data-url="${original}"
+                                >
+                                    📤 Compartir
+                                </button>
 
-
-                                // Crear HTML
-                                const html = `
-                            <a
-                                href="${original}"
-                                target="_blank"
-                                rel="noopener"
-                            >
-                                <img
-                                    src="${thumbnail}"
-                                    class="w-100 shadow-1-strong rounded mb-4"
-                                    alt="Foto de la fiesta"
-                                    loading="lazy"
-                                />
-                            </a>
+                            </div>
                         `;
 
 
-                                // Agregar al contenedor
-                                contenedor.append(html);
+                        contenedor.append(html);
 
-                            });
+                    });
 
-                        });
-
-
-                        console.log(
-                            "Imágenes cargadas:",
-                            response.imagenes.length
-                        );
-
-                    } else {
-
-                        console.log("No se encontraron imágenes.");
-
-                    }
-
-                },
+                });
 
 
-                // =========================================
-                // ERROR EN LA PETICIÓN
-                // =========================================
+                console.log(
+                    "Imágenes cargadas:",
+                    response.imagenes.length
+                );
 
-                error: function (xhr, status, error) {
+            } else {
 
-                    console.error("Error XHR:", error);
+                console.log("No se encontraron imágenes.");
 
-                    console.log(
-                        "Status:",
-                        status
-                    );
+            }
 
-                    console.log(
-                        "Respuesta:",
-                        xhr.responseText
-                    );
+        },
 
-                }
+
+        error: function (xhr, status, error) {
+
+            console.error("Error XHR:", error);
+
+            console.log("Status:", status);
+
+            console.log(
+                "Respuesta:",
+                xhr.responseText
+            );
+
+        }
+
+    });
+
+
+    // ==========================================
+    // BOTÓN COMPARTIR
+    // ==========================================
+
+    $(document).on("click", ".btn-compartir", function () {
+
+        const urlFoto = $(this).data("url");
+
+
+        // Comprobar si el navegador soporta Web Share API
+        if (navigator.share) {
+
+            navigator.share({
+
+                title: "Fotos de la fiesta 🎉",
+
+                text: "Mira esta foto de la fiesta 🎉",
+
+                url: urlFoto
+
+            })
+            .then(function () {
+
+                console.log("Foto compartida");
+
+            })
+            .catch(function (error) {
+
+                console.log(
+                    "Compartir cancelado:",
+                    error
+                );
 
             });
 
-        });
+        } else {
 
-    </script>
+            // Si el navegador no soporta Web Share API
+            copiarAlPortapapeles(urlFoto);
+
+        }
+
+    });
+
+
+    // ==========================================
+    // COPIAR URL SI NO EXISTE WEB SHARE
+    // ==========================================
+
+    function copiarAlPortapapeles(texto) {
+
+        navigator.clipboard.writeText(texto)
+            .then(function () {
+
+                alert(
+                    "Enlace de la foto copiado. 📋"
+                );
+
+            })
+            .catch(function () {
+
+                alert(
+                    "No se pudo copiar el enlace."
+                );
+
+            });
+
+    }
+
+});
+</script>
+
 </body>
 
 </html>
