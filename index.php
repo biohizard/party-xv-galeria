@@ -158,7 +158,6 @@ $(document).ready(function () {
                         const original =
                             urlImages + imagenOriginal;
 
-
                         // HTML de la foto
                         const html = `
                             <div class="foto-container">
@@ -232,19 +231,20 @@ $(document).ready(function () {
     $(document).on("click", ".btn-compartir", function () {
 
         const urlFoto = $(this).data("url");
+        const textoCompartir = "¡Qué bonito recuerdo de esta fiesta! 🎉✨";
+        const hashtags = "#XVAnos #Fiesta #Recuerdos";
 
+        // Texto completo
+        const textoCompleto =
+            textoCompartir + "\n\n" + hashtags;
 
         // Comprobar si el navegador soporta Web Share API
         if (navigator.share) {
 
             navigator.share({
-
-                title: "Fotos de la fiesta 🎉",
-
-                text: "Mira esta foto de la fiesta 🎉",
-
-                url: urlFoto
-
+            title: "Fotos de la fiesta 🎉",
+            text: textoCompleto,
+            url: urlFoto
             })
             .then(function () {
 
