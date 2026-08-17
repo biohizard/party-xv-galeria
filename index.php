@@ -175,14 +175,13 @@ $(document).ready(function () {
                                     >
                                 </a>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-sm btn-light w-100 mb-4 btn-compartir"
-                                    data-url="${original}"
-                                >
-                                    📤 Compartir
-                                </button>
-
+                                <!-- AddToAny BEGIN -->
+                                <div class="a2a_kit a2a_kit_size_32 a2a_default_style" data-a2a-url="${original}" data-a2a-title="Party Galeria">
+                                <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+                                <a class="a2a_button_facebook"></a>
+                                <a class="a2a_button_whatsapp"></a>
+                                <a class="a2a_button_x"></a>
+                                </div>
                             </div>
                         `;
 
@@ -333,7 +332,13 @@ $(document).on("click", ".btn-compartir", async function () {
 
 });
 </script>
-
+<script>
+var a2a_config = a2a_config || {};
+a2a_config.onclick = 1;
+a2a_config.locale = "es";
+</script>
+<script defer src="https://static.addtoany.com/menu/page.js"></script>
+<!-- AddToAny END -->
 </body>
 
 </html>
