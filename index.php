@@ -1,8 +1,3 @@
-<?php
-header("Access-Control-Allow-Origin: *"); // Reemplaza * por tu dominio en producción
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -180,7 +175,7 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
                                 </a>
 
                                 <!-- AddToAny BEGIN -->
-                                <div class="a2a_kit a2a_kit_size_16 a2a_default_style" data-a2a-url="${original}" data-a2a-title="Example Page Title" data-a2a-title="#misxvlaila #EvelynLaila #XVAños2026">
+                                <div class="a2a_kit a2a_kit_size_16 a2a_default_style" data-a2a-url="${original}" data-a2a-title="#misxvlaila #EvelynLaila #XVAños2026">
                                     <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
                                     <a class="a2a_button_facebook"></a>
                                     <a class="a2a_button_whatsapp"></a>
