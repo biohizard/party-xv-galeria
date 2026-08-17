@@ -253,7 +253,7 @@
 
                                 // HTML de la foto
                                 const html = `
-                        <div class="foto-container">
+                        <div class="foto-container mb-3">
 
                             <a
                                 href="${original}"
@@ -262,7 +262,7 @@
                             >
                                 <img
                                     src="${thumbnail}"
-                                    class="w-100 shadow-1-strong rounded mb-2"
+                                    class="w-100 shadow-1-strong rounded mb-2  mb-3 border border-1"
                                     alt="Foto de la fiesta"
                                     loading="lazy"
                                 >
